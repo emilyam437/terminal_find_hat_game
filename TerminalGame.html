@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.terminal/js/jquery.terminal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery.terminal/css/jquery.terminal.min.css"/>
+</head>
+<body>
+    <script>
+
+const hat = '^';
+const hole = 'O';
+const fieldCharacter = '░';
+const pathCharacter = '*';
+const leadCharacter = ">"
+
+class Field {
+
+ constructor(field = [], gameOver=false) {
+   this.field = field
+   this.gameOver = gameOver
+ }
+
+ updateField(updatedField) {
+    this.field = updatedField
+ } 
+
+ updateStatus(boolValue) {
+   this.gameOver = boolValue
+ }
+
+ moveRight() {
+  let newRow = [];
+  let newField = [...this.field]
+  let gameOver = false
+  this.field.forEach(function (row, rowNumber) {
+    row.forEach(function (element, index) {
+      if (element == '>'){
+        newRow = [...row]
+        newRow[index] = '*'
+        if (index+1 < row.length)  {
+          if (newRow[index+1]==fieldCharacter | newRow[index+1]=="*") {
+        newRow[index+1]=">"
+          }
+          if (newRow[index+1]==hat) {
+            alert('You win!')
+            gameOver=true
+            
+          }
+          if (newRow[index+1]==hole) {
+            alert('You fell in a hole! You lose')
+            gameOver=true
+          }
+        } else {
+            alert('Cannot move outside of board. You lose')
+            gameOver=true
+        } 
+      }
+    })
+    if (row.includes(">")){
+      newField[rowNumber] = newRow;
+    }
+});
+ this.updateField(newField)
+ if (gameOver) {
+this.updateStatus(true)
+ }
+}
+
+moveLeft() {
+  let newRow = [];
+  let newField = [...this.field]
+  let gameOver = false
+  this.field.forEach(function (row,rowNumber) {
+    row.forEach(function (element, index) {
+      if (element == '>'){
+        newRow = [...row]
+        newRow[index] = "*"
+        if (index-1 >= 0) {
+          if (newRow[index-1] == fieldCharacter) {
+            newRow[index-1]=">"
+          }
+          if (newRow[index-1] == "*") {
+            newRow[index-1]=">"
+          }
+          if (newRow[index-1]==hat) {
+            alert('You win!')
+            gameOver = true
+          }
+          if (newRow[index-1]==hole) {
+            alert('You fell in a hole! You lose')
+            gameOver = true
+          }
+        } else {
+            alert('Cannot move outside of field. Game over')
+            gameOver = true;
+        }
+      }
+    })
+    if (row.includes(">")){
+      newField[rowNumber] = newRow;
+    }
+});
+ this.updateField(newField)
+  if (gameOver) {
+this.updateStatus(true)
+ }
+}
+
+moveDown() {
+  let newTopRow = [];
+  let topRowNumber;
+  let newBottomRow = [];
+  let bottomRowNumber;
+  let newField = [...this.field]
+  let gameOver = false
+  this.field.forEach(function (row, rowNumber) {
+    row.forEach(function (element, index) {
+      if (element == '>'){
+        newTopRow = [...row]
+        newTopRow[index] = "*"
+        topRowNumber = rowNumber
+        if (rowNumber + 1 < newField.length) {
+          newBottomRow = [...newField[rowNumber+1]]
+          bottomRowNumber = rowNumber+1
+          if (newBottomRow[index] == fieldCharacter) {
+            newBottomRow[index]=">"
+          }
+          if (newBottomRow[index] == "*") {
+            newBottomRow[index]=">"
+          }
+          if (newBottomRow[index]==hat) {
+            alert('You win!')
+            gameOver = true
+          }
+          if (newBottomRow[index]==hole) {
+            alert('You fell in a hole! You lose')
+            gameOver = true
+          }
+        } else {
+            alert('Cannot move outside of field. Game over')
+            gameOver = true;
+        }
+      }
+    })
+      newField[topRowNumber] = newTopRow;
+      newField[bottomRowNumber] = newBottomRow;
+    
+});
+ this.updateField(newField)
+  if (gameOver) {
+this.updateStatus(true)
+ }
+}
+
+moveUp() {
+  let newTopRow = [];
+  let topRowNumber;
+  let newBottomRow = [];
+  let bottomRowNumber;
+  let newField = [...this.field]
+  let gameOver = false
+  this.field.forEach(function (row, rowNumber) {
+    row.forEach(function (element, index) {
+      if (element == '>'){
+        newBottomRow = [...row]
+        newBottomRow[index] = "*"
+        bottomRowNumber = rowNumber
+        if (rowNumber-1 >= 0 ){
+          newTopRow = [...newField[rowNumber-1]]
+          topRowNumber = rowNumber-1
+          if (newTopRow[index] == fieldCharacter) {
+            newTopRow[index]=">"
+          }
+          if (newTopRow[index] == "*") {
+           newTopRow[index]=">"
+          }
+          if (newTopRow[index]==hat) {
+            alert('You win!')
+            gameOver = true
+          }
+          if (newTopRow[index]==hole) {
+            alert('You fell in a hole! You lose')
+            gameOver = true
+          }
+        } else {
+            alert('Cannot move outside of field. Game over')
+            gameOver = true;
+        }
+      }
+    })
+      newField[topRowNumber] = newTopRow;
+      newField[bottomRowNumber] = newBottomRow;
+    
+});
+ this.updateField(newField)
+  if (gameOver) {
+this.updateStatus(true)
+ }
+}
+
+generateField(height=6, width=4, percentage_holes=30) {
+      let newField = []
+      for (let i = 0; i<width*height; i++) {
+       newField.push(fieldCharacter)
+      }
+      let hatIndex = Math.floor(Math.random()*(height*width))
+      while (hatIndex == 0) {
+        hatIndex = Math.floor(Math.random()*(height*width))
+      }
+      let holeIndices = []
+      let counter = 0
+      let totalHoles = Math.floor(height*width*percentage_holes/100)
+      while (counter < totalHoles) {
+        let toPush = Math.ceil(Math.random()*((height*width)-1))
+        if (toPush != hatIndex & toPush != 0 & !holeIndices.includes(toPush)) {
+          holeIndices.push(toPush)
+          counter += 1
+        }
+      }
+      newField[hatIndex] = hat
+      newField[0] = leadCharacter
+      holeIndices.forEach(function (number) {
+        newField[number] = hole
+      })
+      let newBoard = []
+      for (let i=0; i<newField.length; i+=width) {
+      let newRow = newField.slice(i, width+i)
+      newBoard.push(newRow);
+      }
+      this.updateField(newBoard)
+  }
+  
+}
+
+$('body').terminal({
+    play: function() {
+        myField = new Field([])
+        myField.generateField()
+        this.echo('Find the hat without falling into a hole or leaving the board.')
+        this.echo("Directions include:")
+        this.echo("L - left, R - right, U - up, D - down")
+        for (const row of myField.field) {
+            this.echo(row.join());
+        }
+        let gameOver = 'no';
+        
+    this.read('next move: ', nextDir => {
+        if (nextDir.toLowerCase() === 'r'){
+            myField.moveRight()
+        }
+        if (nextDir.toLowerCase() === 'l'){
+            myField.moveLeft();
+        }      
+        if (nextDir.toLowerCase() === 'd'){
+            myField.moveDown();
+        }
+        if (nextDir.toLowerCase() === 'u'){
+            myField.moveUp();
+        }
+        if (!myField.gameOver) {
+            for (const row of myField.field) {
+                this.echo(row.join());
+            }
+            this.read('your name ', name => {
+                this.echo(name)
+            })
+        } else {
+            gameOver = 'yes';
+            this.echo('game over')
+                }
+        }) 
+}
+            },
+{
+            greetings: 'Type play to start game'
+        });
+        </script>
+        
+</body>
+</html>
