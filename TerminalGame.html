@@ -244,9 +244,8 @@ $('body').terminal({
     play: function() {
         myField = new Field([])
         myField.generateField()
-        this.echo('Find the hat(^)!')
-        this.echo("Don't fall into a hole(O)")
-        this.echo('or leave the board.')
+        this.echo('Find the hat(^)')
+        this.echo("Don't fall into a hole(O) or leave the board")
         this.echo("Directions include:")
         this.echo("L - left, R - right, U - up, D - down")
         for (const row of myField.field) {
