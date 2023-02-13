@@ -237,7 +237,7 @@ $('body').terminal({
     play: function() {
         myField = new Field([])
         myField.generateField()
-        this.echo('Find the hat without falling into a hole or leaving the board.')
+        this.echo('Find the hat(^) without falling into a hole(O) or leaving the board.')
         this.echo("Directions include:")
         this.echo("L - left, R - right, U - up, D - down")
         for (const row of myField.field) {
@@ -267,7 +267,7 @@ $('body').terminal({
             })
         } else {
             gameOver = 'yes';
-            this.echo('game over')
+            this.echo('Game over. Type play to play again.')
                 }
         }) 
 }
